@@ -34,11 +34,7 @@ export const takes = (app) => {
     },
     before: {
       all: [schemaHooks.resolveQuery(takesQueryResolver)],
-      find: [
-        (ctx) => {
-          console.log(ctx.toJSON())
-        }
-      ],
+      find: [],
       get: [],
       create: [schemaHooks.validateData(takesDataValidator), schemaHooks.resolveData(takesDataResolver)],
       patch: [schemaHooks.validateData(takesPatchValidator), schemaHooks.resolveData(takesPatchResolver)],

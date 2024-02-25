@@ -38,9 +38,19 @@
 		></i>
 	</div>
 	<div class="h2">{data.quiz.name}</div>
-	<button class="text-xl btn border border-white mt-12" on:click|stopPropagation={take}
-		>Take Quiz
-	</button>
+	<div class="flex space-x-12">
+		<button class="text-xl btn border border-white mt-12" on:click|stopPropagation={take}
+			>Take Quiz
+		</button>
+		<button
+			class="text-xl btn border border-white mt-12"
+			on:click|stopPropagation={() => {
+				goto(`/quizes/${data.quiz._id}/review`);
+			}}
+			>Start Review
+		</button>
+	</div>
+
 	<div class="flex flex-wrap space-x-12 mt-12">
 		{#each drugs as d}
 			<div class="h3 mb-7">{d.name}</div>

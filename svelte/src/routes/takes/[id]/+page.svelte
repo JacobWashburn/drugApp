@@ -47,6 +47,9 @@
 
 <div class="flex flex-col justify-center items-center space-y-7">
 	<div class="h1">{data.quiz.name}</div>
+	<div class="text-2xl">
+		{currentIndex + 1} of {data.take.questions.length}
+	</div>
 	{#if !ready}
 		<Question bind:question={data.take.questions[currentIndex]} bind:take={data.take} />
 		<button

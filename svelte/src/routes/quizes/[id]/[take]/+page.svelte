@@ -40,7 +40,7 @@
 		></i>
 	</div>
 	<div class="h2">{data.quiz.name}</div>
-	<div class="flex justify-between items-center w-1/2 my-12">
+	<div class="flex justify-between items-center min-w-1/2 space-x-12 my-12">
 		<div class="flex space-x-3">
 			<div class="text-xl">Submitted</div>
 			<div class="text-xl">{data.take.submitted}</div>

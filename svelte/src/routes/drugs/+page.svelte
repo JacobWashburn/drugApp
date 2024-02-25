@@ -1,6 +1,6 @@
 <script>
 	import { services } from '$lib/feathers/index.js';
-	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore, Paginator } from '@skeletonlabs/skeleton';
 	import NewDrug from '$lib/modals/NewDrug.svelte';
 	import clone from 'lodash.clonedeep';
 	import InputGroup from '../InputGroup.svelte';
@@ -10,6 +10,38 @@
 	let modalStore = getModalStore();
 	let { Drugs } = services;
 	let search = '';
+	let alphabetSearch = null;
+	let settings = {
+		page: 0,
+		limit: 10,
+		size: $Drugs.arr.filter((d) => {
+			if (alphabetSearch) {
+				return d.name.substring(0, 1).toLowerCase() === alphabetSearch;
+			} else {
+				return d.name.toLowerCase().includes(search.toLowerCase());
+			}
+		}).length,
+		amounts: [5, 10, 25]
+	};
+	$: settings.size = $Drugs.arr.filter((d) => {
+		if (alphabetSearch) {
+			return d.name.substring(0, 1).toLowerCase() === alphabetSearch;
+		} else {
+			return d.name.toLowerCase().includes(search.toLowerCase());
+		}
+	}).length;
+	$: paginatedRows = $Drugs.arr
+		.filter((d) => {
+			if (alphabetSearch) {
+				return d.name.substring(0, 1).toLowerCase() === alphabetSearch;
+			} else {
+				return d.name.toLowerCase().includes(search.toLowerCase());
+			}
+		})
+		.sort(({ name: a }, { name: b }) => (a === b ? 0 : a < b ? -1 : 1))
+		.slice(settings.page * settings.limit, settings.page * settings.limit + settings.limit);
+	// prettier-ignore
+	let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 </script>
 
 <div class="flex flex-col items-center justify-center p-12">
@@ -25,13 +57,7 @@
 				tabindex="-1"
 			></i>
 		</div>
-		<div class="">
-			<InputGroup>
-				<div class="bg-surface-500">Search</div>
-				<input type="text" bind:value={search} />
-			</InputGroup>
-		</div>
-		<div class="flex h2 m-7">
+		<div class="flex h2">
 			New Drug <span class="ml-7"
 				><i
 					class="fas fa-circle-plus"
@@ -47,12 +73,43 @@
 				></i></span
 			>
 		</div>
-		<div class="flex flex-col space-y-3">
-			{#each $Drugs.arr
-				.filter((d) => d.name.toLowerCase().includes(search.toLowerCase()))
-				.sort(({ name: a }, { name: b }) => (a === b ? 0 : a < b ? -1 : 1)) as drug}
+		<div class="m-7">
+			<InputGroup>
+				<div class="bg-surface-500">Search</div>
+				<input type="text" on:input={() => (alphabetSearch = null)} bind:value={search} />
+			</InputGroup>
+		</div>
+		<div class="flex mb-3 text-xl items-end">
+			<div
+				class="hover:text-blue-500 cursor-pointer mr-3"
+				role="none"
+				on:click|stopPropagation={() => {
+					alphabetSearch = null;
+					search = '';
+				}}
+			>
+				All
+			</div>
+			{#each alphabet as char}
 				<div
-					class="card card-hover cursor-pointer p-3"
+					class=" text-center ml-2 hover:text-blue-500 cursor-pointer"
+					class:text-blue-500={alphabetSearch === char}
+					class:text-4xl={alphabetSearch === char}
+					role="none"
+					on:click|stopPropagation={() => {
+						alphabetSearch = char;
+						search = '';
+					}}
+				>
+					{char.toUpperCase()}
+				</div>
+			{/each}
+		</div>
+		<Paginator bind:settings showFirstLastButtons={false} />
+		<div class="space-y-3 mt-3">
+			{#each paginatedRows as drug}
+				<div
+					class="card space-y-3 card-hover cursor-pointer p-3"
 					role="none"
 					on:click|stopPropagation={() => goto(`/drugs/${drug._id}`)}
 				>
@@ -78,7 +135,7 @@
 							}}
 						></i>
 					</div>
-					<div class="h2">{drug.name}</div>
+					<div class="text-2xl">{drug.name}</div>
 				</div>
 			{/each}
 		</div>
