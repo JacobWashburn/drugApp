@@ -13,7 +13,7 @@
 	let alphabetSearch = null;
 	let settings = {
 		page: 0,
-		limit: 10,
+		limit: 5,
 		size: $Drugs.arr.filter((d) => {
 			if (alphabetSearch) {
 				return d.name.substring(0, 1).toLowerCase() === alphabetSearch;
@@ -44,7 +44,7 @@
 	let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 </script>
 
-<div class="flex flex-col items-center justify-center p-12">
+<div class="flex h-[100vh] flex-col items-center justify-center p-12">
 	{#await Drugs.fetch()}
 		<div class="h1">getting data</div>
 	{:then data}
@@ -106,10 +106,10 @@
 			{/each}
 		</div>
 		<Paginator bind:settings showFirstLastButtons={false} />
-		<div class="space-y-3 mt-3">
+		<div class="flex-1 min-w-600 space-y-3 mt-3 scroll-px-4 s flex flex-col overflow-y-auto">
 			{#each paginatedRows as drug}
 				<div
-					class="card space-y-3 card-hover cursor-pointer p-3"
+					class=" shrink-0 card space-y-3 card-hover cursor-pointer p-3"
 					role="none"
 					on:click|stopPropagation={() => goto(`/drugs/${drug._id}`)}
 				>
