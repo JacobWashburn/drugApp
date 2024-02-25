@@ -44,7 +44,7 @@
 	let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 </script>
 
-<div class="flex h-[100vh] flex-col items-center justify-center p-12">
+<div class="flex h-[100vh] flex-col items-center justify-center relative p-12">
 	{#await Drugs.fetch()}
 		<div class="h1">getting data</div>
 	{:then data}
@@ -65,9 +65,23 @@
 					on:keypress={() => {}}
 					tabindex="-1"
 					on:click|stopPropagation={() => {
-						modalStore.trigger({
-							type: 'component',
-							component: 'NewDrug'
+						Drugs.create({
+							name: 'New Drug',
+							class: [],
+							mechanism: [],
+							indications: [],
+							contraindications: [],
+							sideEffects: [],
+							interactions: [],
+							adultDosage: [],
+							pedDosage: [],
+							duration: [],
+							notes: ''
+						}).then((res) => {
+							modalStore.trigger({
+								type: 'component',
+								component: { ref: NewDrug, props: { newDrug: clone(res) } }
+							});
 						});
 					}}
 				></i></span
@@ -76,7 +90,14 @@
 		<div class="m-7">
 			<InputGroup>
 				<div class="bg-surface-500">Search</div>
-				<input type="text" on:input={() => (alphabetSearch = null)} bind:value={search} />
+				<input
+					type="text"
+					on:input={() => {
+						alphabetSearch = null;
+						settings.page = 0;
+					}}
+					bind:value={search}
+				/>
 			</InputGroup>
 		</div>
 		<div class="flex mb-3 text-xl items-end">
@@ -84,6 +105,7 @@
 				class="hover:text-blue-500 cursor-pointer mr-3"
 				role="none"
 				on:click|stopPropagation={() => {
+					settings.page = 0;
 					alphabetSearch = null;
 					search = '';
 				}}
@@ -97,6 +119,7 @@
 					class:text-4xl={alphabetSearch === char}
 					role="none"
 					on:click|stopPropagation={() => {
+						settings.page = 0;
 						alphabetSearch = char;
 						search = '';
 					}}

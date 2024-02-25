@@ -20,6 +20,8 @@
 		duration: [],
 		notes: ''
 	};
+	let timeout = null;
+
 	let fields = [
 		{
 			label: 'Class',
@@ -68,12 +70,29 @@
 			field: 'duration'
 		}
 	];
+	let onChange = () => {
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+		timeout = setTimeout(() => {
+			Drugs.patch(newDrug._id, newDrug).then(() => {
+				console.log('change saved');
+			});
+		}, 1000);
+	};
+	const newItem = (field) => {
+		newDrug[field] = [...newDrug[field], ''];
+		onChange();
+	};
+	const removeItem = (field, i) => {
+		newDrug[field] = newDrug[field].filter((item, idx) => idx !== i);
+		onChange();
+	};
+	const newDuration = () => {
+		newDrug.duration = [...newDrug.duration, { onset: '', peak: '', duration: '' }];
+		onChange();
+	};
 
-	const newItem = (field) => (newDrug[field] = [...newDrug[field], '']);
-	const removeItem = (field, i) =>
-		(newDrug[field] = newDrug[field].filter((item, idx) => idx !== i));
-	const newDuration = () =>
-		(newDrug.duration = [...newDrug.duration, { onset: '', peak: '', duration: '' }]);
 	const create = () => {
 		Drugs.create(newDrug).then((res) => {
 			modalStore.close();
@@ -86,13 +105,11 @@
 	};
 </script>
 
-<div
-	class="flex flex-col w-full h-[100vh] justify-start items-center p-12 space-y-7 bg-surface-500"
->
-	<div class="flex w-full flex-col justify-start items-start h-[90%] space-y-12 overflow-y-auto">
+<div class="flex flex-col h-[100vh] justify-start items-center p-12 bg-surface-500">
+	<div class="flex flex-col justify-start items-start max-h-full overflow-y-scroll">
 		<InputGroup>
 			<div class="bg-surface-400">Name</div>
-			<input bind:value={newDrug.name} type="text" />
+			<input bind:value={newDrug.name} on:input={onChange} type="text" />
 		</InputGroup>
 		{#each fields as f}
 			<DrugItem
@@ -101,22 +118,21 @@
 				field={f.field}
 				{newItem}
 				{removeItem}
+				on:change={onChange}
 			/>
 		{/each}
-		<div class="flex w-fit">
-			<div class="h3">
-				Duration
-				<span
-					><i
-						class="fas fa-circle-plus"
+		<div class="flex w-fit mb-7">
+			<div class="h3">Duration</div>
+			<div class="flex flex-col space-y-7 w-fit">
+				<div>
+					<i
+						class="fas fa-circle-plus text-4xl"
 						on:click|stopPropagation={newDuration}
 						on:keypress={() => {}}
 						role="button"
 						tabindex="-1"
-					></i></span
-				>
-			</div>
-			<div class="flex flex-col space-y-7 w-fit">
+					></i>
+				</div>
 				{#each newDrug.duration as d, i}
 					<div class="flex flex-col">
 						{#each durationFields as f}
@@ -124,7 +140,13 @@
 								<div class="w-100">
 									{f.label}
 								</div>
-								<textarea class="bg-transparent" bind:value={d[f.field]} rows="2" cols="100" />
+								<textarea
+									class="bg-transparent"
+									on:input={onChange}
+									bind:value={d[f.field]}
+									rows="2"
+									cols="100"
+								/>
 								<div class="flex justify-start">
 									<i
 										class="fas fa-circle-minus text-red-500 text-xl"
@@ -143,7 +165,13 @@
 		<div class="flex w-fit">
 			<InputGroup>
 				<div class="bg-surface-400">Considerations</div>
-				<textarea bind:value={newDrug.notes} class="bg-transparent" cols="100" rows="6" />
+				<textarea
+					bind:value={newDrug.notes}
+					class="bg-transparent"
+					cols="100"
+					on:input={onChange}
+					rows="6"
+				/>
 			</InputGroup>
 		</div>
 	</div>
