@@ -6,7 +6,7 @@ import auth from '@feathersjs/authentication-client';
 import io from 'socket.io-client';
 import BaseModel from '../base/BaseModel.js';
 
-const socket = io('http://192.168.0.59:3030', {
+const socket = io('http://localhost:3030', {
 	transports: ['websocket']
 });
 
