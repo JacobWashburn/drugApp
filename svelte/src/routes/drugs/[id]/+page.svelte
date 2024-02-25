@@ -55,7 +55,7 @@
 	$: drug = $Drugs.key[data.id];
 </script>
 
-<div class="flex w-full flex-col justify-center items-center p-12">
+<div class="flex w-full h-full overflow-y-auto flex-col justify-start items-center p-12">
 	<div class="self-start">
 		<i
 			class="fas fa-arrow-alt-circle-left text-2xl"

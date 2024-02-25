@@ -31,6 +31,6 @@
 <!--Toasts initilization-->
 <Toast position="bl" />
 
-<div class="w-full h-full flex flex-col justify-center items-center overflow-y-auto">
+<div class="w-full h-[100vh] flex flex-col justify-start items-center overflow-y-auto">
 	<slot />
 </div>
