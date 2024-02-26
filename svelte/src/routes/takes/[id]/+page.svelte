@@ -9,6 +9,25 @@
 	export let data;
 	let currentIndex = 0;
 	let ready = false;
+	data.take.start = dayjs().format('YYYY-MM-DD h:mm:ss a');
+	let start = dayjs();
+	let end = dayjs();
+	$: hours = Math.floor(end.diff(start, 'h'));
+	$: minutes = Math.floor(end.diff(start, 'm')) - (hours > 0 ? hours * 60 : 0);
+	$: seconds = Math.floor(end.diff(start, 's')) - (minutes > 0 ? minutes * 60 : 0);
+
+	function updateTimer() {
+		end = dayjs();
+	}
+
+	let interval = setInterval(updateTimer, 1000);
+
+	function padValue(value, length = 2) {
+		const { length: currentLength } = value.toString();
+		if (currentLength >= length) return value.toString();
+		return `0${value}`;
+	}
+
 	let next = () => {
 		let question = data.take.questions[currentIndex];
 		let allQs = data.take.questions.filter((q) => q.field === question.field);
@@ -24,7 +43,9 @@
 		} else ready = true;
 	};
 	const submit = () => {
+		clearInterval(interval);
 		data.take.submitted = dayjs().format('YYYY-MM-DD h:mm:ss a');
+		data.take.time = `${hours > 0 ? `${hours}h` : ''} ${minutes} min`;
 		let allQs = data.take.questions;
 		let correct = 0;
 		for (const field of data.quiz.fields) {
@@ -35,6 +56,7 @@
 			goto(`/quizes/${data.quiz._id}`);
 		});
 	};
+
 	$: disabledButton = data.take.questions[currentIndex].answers?.none
 		? data.take.questions[currentIndex].answers.correct.length === 0 &&
 			data.take.questions[currentIndex].answers.wrong.length === 0
@@ -47,6 +69,9 @@
 
 <div class="flex flex-col justify-center items-center space-y-7">
 	<div class="h1">{data.quiz.name}</div>
+	<div class="text-2xl w-150 text-center">
+		{padValue(hours)}:{padValue(minutes)}:{padValue(seconds)}
+	</div>
 	<div class="text-2xl">
 		{currentIndex + 1} of {data.take.questions.length}
 	</div>

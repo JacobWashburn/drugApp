@@ -41,9 +41,19 @@
 	</div>
 	<div class="h2">{data.quiz.name}</div>
 	<div class="flex justify-between items-center min-w-1/2 space-x-12 my-12">
-		<div class="flex space-x-3">
-			<div class="text-xl">Submitted</div>
-			<div class="text-xl">{data.take.submitted}</div>
+		<div class="flex flex-col">
+			<div class="flex space-x-3">
+				<div class="text-xl">Started</div>
+				<div class="text-xl">{data.take.start || ''}</div>
+			</div>
+			<div class="flex space-x-3">
+				<div class="text-xl">Submitted</div>
+				<div class="text-xl">{data.take.submitted}</div>
+			</div>
+			<div class="flex space-x-3">
+				<div class="text-xl">Total Time</div>
+				<div class="text-xl">{data.take.time || ''}</div>
+			</div>
 		</div>
 		<div class="flex space-x-3">
 			<div class="h1">Total Score</div>

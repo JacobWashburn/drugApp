@@ -44,7 +44,7 @@
 	let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 </script>
 
-<div class="flex h-[100vh] flex-col items-center justify-center relative p-12">
+<div class="flex h-[100vh] w-full flex-col items-center justify-center relative p-12">
 	{#await Drugs.fetch()}
 		<div class="h1">getting data</div>
 	{:then data}

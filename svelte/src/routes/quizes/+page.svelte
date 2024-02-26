@@ -17,7 +17,7 @@
 	};
 </script>
 
-<div class="flex flex-col justify-center items-center w-full h-full p-12">
+<div class="flex flex-col justify-start items-center w-full h-full p-12">
 	<div class="self-start">
 		<i
 			class="fas fa-arrow-alt-circle-left text-2xl"

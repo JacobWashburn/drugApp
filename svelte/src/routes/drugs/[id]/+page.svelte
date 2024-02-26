@@ -70,7 +70,7 @@
 		<div class="flex w-full border border-surface-500 p-3">
 			<div class="text-2xl w-1/4 mr-7">{f.label}</div>
 			<div class="w-3/4 flex flex-col space-y-2">
-				{#each drug?.[f.field] as item}
+				{#each drug?.[f.field] || [] as item}
 					<div class="">{item}</div>
 				{/each}
 			</div>
@@ -79,7 +79,7 @@
 	<div class="flex w-full border border-surface-500 p-3">
 		<div class="text-2xl w-1/4 mr-7">Duration</div>
 		<div class="w-3/4 flex flex-col space-y-3">
-			{#each drug.duration as d}
+			{#each drug?.duration || [] as d}
 				<div class="flex flex-col">
 					{#each durationFields as f}
 						<div class="flex space-x-3">

@@ -27,7 +27,7 @@
 	};
 </script>
 
-<div class="flex flex-col justify-center items-center p-12">
+<div class="w-full flex flex-col justify-center items-center p-12">
 	<div class="self-start">
 		<i
 			class="fas fa-arrow-alt-circle-left text-2xl"
@@ -61,6 +61,7 @@
 			<thead>
 				<tr>
 					<th>Submitted</th>
+					<th>Time</th>
 					{#each data.quiz.fields as f}
 						<th>{fieldNames[f]}</th>
 					{/each}
@@ -70,10 +71,28 @@
 			<tbody>
 				{#each data.takes as t}
 					<tr
-						class="cursor-pointer"
-						on:click|stopPropagation={() => goto(`/quizes/${data.quiz._id}/${t._id}`)}
+						class:cursor-pointer={!!t.submitted}
+						class=""
+						on:click|stopPropagation={() => {
+							if (!!t.submitted) {
+								goto(`/quizes/${data.quiz._id}/${t._id}`);
+							}
+						}}
 					>
-						<td>{t.submitted}</td>
+						{#if !!t.submitted}
+							<td>{t.submitted}</td>
+							<td>{t.time || ''}</td>
+						{:else}
+							<td colspan="2" class="text-red-500"
+								>Not Submitted <span
+									class="ml-7 text-white hover:text-blue-500 cursor-pointer"
+									role="none"
+									on:click|stopPropagation={() => {
+										goto(`/takes/${t._id}`);
+									}}>Retake</span
+								>
+							</td>
+						{/if}
 						{#each data.quiz.fields as f}
 							<td>{numeral(t[f]?.result * 0.01).format('0%')}</td>
 						{/each}
