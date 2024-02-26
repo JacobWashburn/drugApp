@@ -72,10 +72,10 @@
 				<tr>
 					<th class="min-w-250">Submitted</th>
 					<th class="min-w-150">Time</th>
+					<th class="min-w-150">Score</th>
 					{#each data.quiz.fields as f}
 						<th class="min-w-150">{fieldNames[f]}</th>
 					{/each}
-					<th class="min-w-150">Score</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -95,10 +95,10 @@
 						{:else}
 							<td colspan="2" class="text-red-500">Not Submitted</td>
 						{/if}
+						<td>{numeral(t?.score * 0.01).format('0%')}</td>
 						{#each data.quiz.fields as f}
 							<td>{numeral(t[f]?.result * 0.01).format('0%')}</td>
 						{/each}
-						<td>{numeral(t?.score * 0.01).format('0%')}</td>
 					</tr>
 				{/each}
 			</tbody>
