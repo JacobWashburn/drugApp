@@ -37,7 +37,7 @@
 	};
 </script>
 
-<div class="w-full flex flex-col justify-center items-center p-12">
+<div class="w-full flex h-full flex-col justify-center items-center p-12">
 	<div class="self-start">
 		<i
 			class="fas fa-arrow-alt-circle-left text-2xl"
@@ -66,16 +66,16 @@
 			<div class="h3 mb-7">{d.name}</div>
 		{/each}
 	</div>
-	<div class="table-container">
-		<table class="table table-hover">
+	<div class="table-container flex-1 overflow-y-auto">
+		<table class="table table-interactive">
 			<thead>
 				<tr>
-					<th>Submitted</th>
-					<th>Time</th>
+					<th class="min-w-250">Submitted</th>
+					<th class="min-w-150">Time</th>
 					{#each data.quiz.fields as f}
-						<th>{fieldNames[f]}</th>
+						<th class="min-w-150">{fieldNames[f]}</th>
 					{/each}
-					<th>Score</th>
+					<th class="min-w-150">Score</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,22 +86,14 @@
 						on:click|stopPropagation={() => {
 							if (!!t.submitted) {
 								goto(`/quizes/${data.quiz._id}/${t._id}`);
-							}
+							} else goto(`/takes/${t._id}`);
 						}}
 					>
 						{#if !!t.submitted}
 							<td>{t.submitted}</td>
-							<td>{t.time || ''}</td>
+							<td>{t.time}</td>
 						{:else}
-							<td colspan="2" class="text-red-500"
-								>Not Submitted <span
-									class="ml-7 text-white hover:text-blue-500 cursor-pointer"
-									role="none"
-									on:click|stopPropagation={() => {
-										goto(`/takes/${t._id}`);
-									}}>Retake</span
-								>
-							</td>
+							<td colspan="2" class="text-red-500">Not Submitted</td>
 						{/if}
 						{#each data.quiz.fields as f}
 							<td>{numeral(t[f]?.result * 0.01).format('0%')}</td>

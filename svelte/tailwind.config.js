@@ -7,7 +7,7 @@ import { skeleton } from '@skeletonlabs/tw-plugin';
 let sizes = {
 	'1/4': '25%',
 	30: '30%',
-	'1/3': '33.33333%',
+	'1/3': '33%',
 	'1/2': '50%',
 	'3/4': '75%',
 	25: '25px',

@@ -3,21 +3,21 @@
 	import Question from './Question.svelte';
 	import dayjs from 'dayjs';
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
 
 	let { Takes } = services;
 	export let data;
-	let currentIndex = 0;
-	let ready = false;
-	data.take.start = dayjs().format('YYYY-MM-DD h:mm:ss a');
+	let currentIndex = data.take.questionIndex;
+	$: console.log({ data });
+	let elapsedTime = data.take.elapsedTime;
 	let start = dayjs();
-	let end = dayjs();
+	let end = dayjs().add(elapsedTime, 'ms');
+
 	$: hours = Math.floor(end.diff(start, 'h'));
 	$: minutes = Math.floor(end.diff(start, 'm')) - (hours > 0 ? hours * 60 : 0);
 	$: seconds = Math.floor(end.diff(start, 's')) - (minutes > 0 ? minutes * 60 : 0);
 
 	function updateTimer() {
-		end = dayjs();
+		end = dayjs().add(elapsedTime, 'ms');
 	}
 
 	let interval = setInterval(updateTimer, 1000);
@@ -38,14 +38,16 @@
 		}
 		data.take[question.field].result =
 			data.take[question.field].correct.length * (100 / allQs.length);
-		if (currentIndex < data.take.questions.length - 1) {
-			currentIndex++;
-		} else ready = true;
+
+		currentIndex++;
+		data.take.questionIndex = currentIndex;
+		data.take.elapsedTime = end - start;
+		Takes.patch(data.take._id, data.take);
 	};
 	const submit = () => {
 		clearInterval(interval);
 		data.take.submitted = dayjs().format('YYYY-MM-DD h:mm:ss a');
-		data.take.time = `${hours > 0 ? `${hours}h` : ''} ${minutes} min`;
+		data.take.time = `${padValue(hours)}:${padValue(minutes)}:${padValue(seconds)}`;
 		let allQs = data.take.questions;
 		let correct = 0;
 		for (const field of data.quiz.fields) {
@@ -57,14 +59,11 @@
 		});
 	};
 
-	$: disabledButton = data.take.questions[currentIndex].answers?.none
-		? data.take.questions[currentIndex].answers.correct.length === 0 &&
-			data.take.questions[currentIndex].answers.wrong.length === 0
-		: data.take.questions[currentIndex].answers.correct.length > 0 ||
-			data.take.questions[currentIndex].answers.wrong.length > 0;
-	onMount(() => {
-		ready = false;
-	});
+	$: disabledButton = data.take.questions?.[currentIndex]?.answers?.none
+		? data.take.questions?.[currentIndex]?.answers?.correct?.length === 0 &&
+			data.take.questions?.[currentIndex]?.answers?.wrong?.length === 0
+		: data.take.questions?.[currentIndex]?.answers?.correct?.length > 0 ||
+			data.take.questions?.[currentIndex]?.answers?.wrong?.length > 0;
 </script>
 
 <div class="flex flex-col justify-center items-center space-y-7">
@@ -72,10 +71,10 @@
 	<div class="text-2xl w-150 text-center">
 		{padValue(hours)}:{padValue(minutes)}:{padValue(seconds)}
 	</div>
-	<div class="text-2xl">
+	<div class="text-2xl" class:hidden={currentIndex >= data.take.questions.length}>
 		{currentIndex + 1} of {data.take.questions.length}
 	</div>
-	{#if !ready}
+	{#if currentIndex < data.take.questions.length}
 		<Question bind:question={data.take.questions[currentIndex]} bind:take={data.take} />
 		<button
 			class="btn border border-white"

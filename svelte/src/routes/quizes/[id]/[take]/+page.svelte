@@ -60,57 +60,59 @@
 			<div class="h1">{numeral(data.take.score * 0.01).format('0%')}</div>
 		</div>
 	</div>
-	<div class="flex flex-col justify-center items-center w-full space-y-12">
+	<div class="flex flex-col justify-start items-center flex-1 overflow-y-auto w-full space-y-12">
 		{#each data.quiz.fields as field}
-			<div class="flex flex-col w-full">
-				<div class="flex justify-between items-center w-450">
-					<div class="h2">{fieldNames[field]}</div>
-					<div class="flex space-x-3">
-						<div class="text-xl">Score</div>
-						<div class="text-xl">{numeral(data.take[field].result * 0.01).format('0%')}</div>
-					</div>
-				</div>
-				<div class="flex">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>Correct</th>
-								<th>Wrong</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<div class="flex flex-col">
-										{#each data.take[field].correct as cq}
-											<div
-												class="text-xl cursor-pointer hover:text-blue-500"
-												role="none"
-												on:click|stopPropagation={() => openModal(cq)}
-											>
-												{cq.drug}
-											</div>
-										{/each}
+			<table class="table table-fixed">
+				<thead>
+					<tr>
+						<th colspan="2">
+							<div class="flex justify-between items-center w-450">
+								<div class="h2">{fieldNames[field]}</div>
+								<div class="flex space-x-3">
+									<div class="text-xl">Score</div>
+									<div class="text-xl">
+										{numeral(data.take[field].result * 0.01).format('0%')}
 									</div>
-								</td>
-								<td>
-									<div class="flex flex-col space-y-1 cursor-pointer">
-										{#each data.take[field].wrong as wq}
-											<div
-												class="text-xl cursor-pointer hover:text-blue-500"
-												role="none"
-												on:click|stopPropagation={() => openModal(wq)}
-											>
-												{wq.drug}
-											</div>
-										{/each}
+								</div>
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th>Correct</th>
+						<th>Wrong</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<div class="flex flex-col">
+								{#each data.take[field].correct as cq}
+									<div
+										class="text-xl cursor-pointer hover:text-blue-500"
+										role="none"
+										on:click|stopPropagation={() => openModal(cq)}
+									>
+										{cq.drug}
 									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
+								{/each}
+							</div>
+						</td>
+						<td>
+							<div class="flex flex-col space-y-1 cursor-pointer">
+								{#each data.take[field].wrong as wq}
+									<div
+										class="text-xl cursor-pointer hover:text-blue-500"
+										role="none"
+										on:click|stopPropagation={() => openModal(wq)}
+									>
+										{wq.drug}
+									</div>
+								{/each}
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		{/each}
 	</div>
 </div>

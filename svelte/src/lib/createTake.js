@@ -1,5 +1,6 @@
 import clone from 'lodash.clonedeep';
 import { services } from '$lib/feathers/index.js';
+import dayjs from 'dayjs';
 
 let { Takes } = services;
 
@@ -7,7 +8,14 @@ let getNumber = () => Math.floor(Math.random() * 10);
 let sorted = (arr) => arr.sort(() => (Math.random() > 0.5 ? 1 : -1));
 
 function createTake(drugs, quiz, fieldNames) {
-	let newTake = { quizID: quiz._id, questions: [], score: 0 };
+	let newTake = {
+		quizID: quiz._id,
+		questions: [],
+		score: 0,
+		questionIndex: 0,
+		start: dayjs().format('YYYY-MM-DD h:mm:ss a'),
+		elapsedTime: 0
+	};
 	drugs.forEach((dg) => {
 		let amount = getNumber();
 		let trueAmount = amount > 8 ? amount - 2 : amount;
