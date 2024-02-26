@@ -4,7 +4,7 @@ let { Drugs, Quizes } = services;
 
 export const load = async ({ params }) => {
 	let quiz = await Quizes.fetchOne(params.id);
-	let drugIDs = Object.keys(quiz).filter((k) => !['_id', 'name', 'fields'].includes(k));
+	let drugIDs = quiz.drugs.map((d) => d.drugID);
 	let drugs = await Promise.all(
 		drugIDs.map((id) => {
 			return Drugs.fetchOne(id);
