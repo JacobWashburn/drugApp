@@ -1,8 +1,11 @@
 <script>
+	import { services } from '$lib/feathers/index.js';
 	import { goto } from '$app/navigation';
 	import numeral from 'numeral';
+	import generateQuiz from '$lib/generateQuiz.js';
 	import createTake from '$lib/createTake.js';
 
+	let { Drugs } = services;
 	export let data;
 	let fieldNames = {
 		class: 'Class',
@@ -16,12 +19,19 @@
 		duration: 'Duration',
 		notes: 'Considerations'
 	};
-	let drugs = Object.keys(data.quiz)
-		.filter((k) => !['name', '_id', 'fields'].includes(k))
-		.map((key) => data.quiz[key]);
-
 	const take = () => {
-		createTake(drugs, data.quiz, fieldNames).then((res) => {
+		let drugList = data.quiz.drugs.map((d) => $Drugs.key[d.drugID]);
+		const quizFields = Object.keys(fieldNames).reduce((acc, curr) => {
+			acc[curr] = data.quiz.fields.includes(curr);
+			return acc;
+		}, {});
+		let quiz = generateQuiz(quizFields, drugList, $Drugs.arr, data.quiz.name);
+		quiz._id = data.quiz._id;
+		let drugs = Object.keys(quiz)
+			.filter((k) => !['name', '_id', 'fields'].includes(k))
+			.map((key) => quiz[key]);
+		console.log(quiz);
+		createTake(drugs, quiz, fieldNames).then((res) => {
 			goto(`/takes/${res._id}`);
 		});
 	};
@@ -52,7 +62,7 @@
 	</div>
 
 	<div class="flex flex-wrap space-x-12 mt-12">
-		{#each drugs as d}
+		{#each data.quiz.drugs as d}
 			<div class="h3 mb-7">{d.name}</div>
 		{/each}
 	</div>

@@ -3,15 +3,16 @@ import { services } from '$lib/feathers/index.js';
 
 let { Takes } = services;
 
+let getNumber = () => Math.floor(Math.random() * 10);
+let sorted = (arr) => arr.sort(() => (Math.random() > 0.5 ? 1 : -1));
+
 function createTake(drugs, quiz, fieldNames) {
 	let newTake = { quizID: quiz._id, questions: [], score: 0 };
-	let getNumber = () => Math.floor(Math.random() * 10);
-	let sorted = (arr) => arr.sort(() => (Math.random() > 0.5 ? 1 : -1));
-
 	drugs.forEach((dg) => {
 		let amount = getNumber();
 		let trueAmount = amount > 8 ? amount - 2 : amount;
 		let d = clone(dg);
+		console.log(dg);
 		const drug = d.name;
 		const drugID = d.drugID;
 		delete d.name;

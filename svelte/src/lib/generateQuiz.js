@@ -1,4 +1,4 @@
-function generateQuiz(fields, drugList, drugs, Quizes, name) {
+function generateQuiz(fields, drugList, drugs, name) {
 	let quiz = { name, fields: Object.keys(fields).filter((key) => fields[key]) };
 	for (const drug of drugList) {
 		quiz[drug._id] = { name: drug.name, drugID: drug._id };
@@ -79,7 +79,7 @@ function generateQuiz(fields, drugList, drugs, Quizes, name) {
 			}
 		}
 	}
-	return Quizes.create(quiz);
+	return quiz;
 }
 
 export default generateQuiz;

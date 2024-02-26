@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 import { Timer } from '$lib/timer.js';
 
 class BaseModel {
-	constructor({ servicePath, service, idField = 'id', restrictedBy = 'Hospital Number' }) {
+	constructor({ servicePath, service, idField = '_id', restrictedBy = 'Hospital Number' }) {
 		this.servicePath = servicePath;
 		this.service = service;
 		this.idField = idField;

@@ -3,7 +3,6 @@
 	import { goto } from '$app/navigation';
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
-	import generateQuiz from '$lib/generateQuiz.js';
 	import InputGroup from '../../InputGroup.svelte';
 	import StringFilter from '$lib/components/StringFilter.svelte';
 
@@ -69,10 +68,15 @@
 		} else {
 			list = $Drugs.arr.sort(() => (Math.random > 0.5 ? 1 : -1)).slice(0, amount);
 		}
-		generateQuiz(quizFields, list, $Drugs.arr, Quizes, name)
+		let quiz = {
+			name,
+			fields: Object.keys(quizFields).filter((key) => quizFields[key]),
+			drugs: list.map((d) => ({ name: d.name, drugID: d._id }))
+		};
+		Quizes.create(quiz)
 			.then((res) => {
 				generating = false;
-				goto('/quizes');
+				goto(`/quizes/${res._id}`);
 			})
 			.catch((err) => {
 				console.error(err);
