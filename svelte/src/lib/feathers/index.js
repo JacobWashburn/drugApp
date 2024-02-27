@@ -11,5 +11,5 @@ export const services = schemas
 	}, {});
 
 export const load = () => {
-	Object.values(services).forEach((s) => s.fetch());
+	return Promise.all(Object.values(services).map((s) => s.fetch()));
 };

@@ -19,6 +19,21 @@
 		duration: 'Duration',
 		notes: 'Considerations'
 	};
+	let usedFields = data.takes.reduce((acc, take) => {
+		for (const key of Object.keys(fieldNames)) {
+			if (!acc[key] && !!take[key]) {
+				acc[key] = true;
+			}
+		}
+		return acc;
+	}, {});
+	for (const field of data.quiz.fields) {
+		if (!usedFields[field]) {
+			console.log(field);
+			usedFields[field] = true;
+		}
+	}
+	console.log(usedFields, data.quiz);
 	const totalQs =
 		data.quiz.fields.length * data.quiz.drugs.filter((drug) => !!$Drugs.key[drug.drugID]).length;
 	const take = () => {
@@ -40,7 +55,7 @@
 </script>
 
 <div class="w-full h-full flex flex-col justify-start items-center p-12">
-	<div class="self-start">
+	<div class="self-start w-full flex justify-between">
 		<i
 			class="fas fa-arrow-alt-circle-left text-2xl"
 			on:click|stopPropagation={() => goto('/quizes')}
@@ -48,15 +63,22 @@
 			role="button"
 			tabindex="-1"
 		></i>
+		<i
+			class="fas fa-pencil-alt text-2xl"
+			on:click|stopPropagation={() => goto(`/quizes/${data.quiz._id}/edit`)}
+			on:keypress={() => {}}
+			role="button"
+			tabindex="-1"
+		></i>
 	</div>
 	<div class="h2">{data.quiz.name}</div>
 	<div class="text-2xl mt-3">{totalQs} Questions</div>
-	<div class="flex space-x-12">
-		<button class="text-xl btn border border-white mt-12" on:click|stopPropagation={take}
+	<div class="flex space-x-12 mt-3">
+		<button class="text-xl btn border border-white" on:click|stopPropagation={take}
 			>Take Quiz
 		</button>
 		<button
-			class="text-xl btn border border-white mt-12"
+			class="text-xl btn border border-white"
 			on:click|stopPropagation={() => {
 				goto(`/quizes/${data.quiz._id}/review`);
 			}}
@@ -64,19 +86,19 @@
 		</button>
 	</div>
 
-	<div class="flex flex-wrap space-x-12 my-12 max-h-250 overflow-y-auto">
+	<div class="flex flex-wrap space-x-12 my-3 max-h-250 overflow-y-auto">
 		{#each data.quiz.drugs.filter((drug) => !!$Drugs.key[drug.drugID]) as d}
 			<div class="h3 mb-7">{d.name}</div>
 		{/each}
 	</div>
-	<div class="table-container max-h-450">
+	<div class="table-container flex-1">
 		<table class="table">
 			<thead>
 				<tr>
 					<th> Submitted</th>
 					<th> Time</th>
 					<th> Score</th>
-					{#each data.quiz.fields as f}
+					{#each Object.keys(usedFields) as f}
 						<th>
 							{fieldNames[f]}
 						</th>
@@ -107,9 +129,9 @@
 						<td>
 							{numeral(t?.score * 0.01).format('0%')}
 						</td>
-						{#each data.quiz.fields as f}
+						{#each Object.keys(usedFields) as f}
 							<td>
-								{numeral(t[f]?.result * 0.01).format('0%')}
+								{t[f] ? numeral(t[f]?.result * 0.01).format('0%') : ''}
 							</td>
 						{/each}
 					</tr>

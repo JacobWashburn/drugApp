@@ -8,6 +8,7 @@
 	// Floating UI for Popups
 	import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
 	import { initializeStores, Modal, storePopup, Toast } from '@skeletonlabs/skeleton';
+	import Spinner from '$lib/components/Spinner.svelte';
 
 	$: if (browser && $page.route) {
 		auth
@@ -21,7 +22,7 @@
 	}
 
 	initializeStores();
-	load();
+
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
 
@@ -32,5 +33,9 @@
 <Toast position="bl" />
 
 <div class="w-full h-[100vh] flex flex-col justify-start items-center overflow-y-auto">
-	<slot />
+	{#await load()}
+		<Spinner />
+	{:then data}
+		<slot />
+	{/await}
 </div>

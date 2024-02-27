@@ -101,7 +101,7 @@
 			{/if}
 			{#if question.choices.filter((ch) => ch.answer && !values.includes(createID(ch.value))).length === 0 && !result && !none}
 				<div class="text-green-500 ml-7">None of the above</div>
-			{:else if question.choices.filter((ch) => ch.answer).length > 0}
+			{:else if question.choices.filter((ch) => ch.answer).length > 0 && !none}
 				<div class="text-red-500 ml-7">None of the above</div>
 			{/if}
 		</div>

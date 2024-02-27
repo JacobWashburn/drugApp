@@ -19,6 +19,12 @@
 		notes: 'Considerations'
 	};
 
+	let usedFields = [];
+	for (const key of Object.keys(fieldNames)) {
+		if (!!data.take[key]) {
+			usedFields.push(key);
+		}
+	}
 	let openModal = (question) => {
 		modalStore.trigger({
 			type: 'component',
@@ -27,7 +33,7 @@
 	};
 </script>
 
-<div class="flex flex-col justify-start items-center p-12 h-full w-full">
+<div class="flex flex-col justify-start items-center p-12 h-fit w-full">
 	<div class="self-start">
 		<i
 			class="fas fa-arrow-alt-circle-left text-2xl"
@@ -58,8 +64,8 @@
 			<div class="h1">{numeral(data.take.score * 0.01).format('0%')}</div>
 		</div>
 	</div>
-	<div class="flex flex-col justify-start items-center flex-1 overflow-y-auto w-full space-y-12">
-		{#each data.quiz.fields as field}
+	<div class="flex flex-col justify-start items-center w-full space-y-12">
+		{#each usedFields as field}
 			<table class="table table-fixed">
 				<thead>
 					<tr>
