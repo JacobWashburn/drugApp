@@ -40,33 +40,35 @@
 			{:else if !result && none}
 				<div class="text-red-500 ml-7">None of the above</div>
 			{/if}
-			{#if question.field === 'duration'}
-				<table class="table">
-					<thead>
-						<tr>
-							{#each durationFields as f}
-								<th class="font-bold">{f.label}</th>
-							{/each}
-						</tr>
-					</thead>
-					<tbody>
-						{#each combined as a}
+			{#if !none}
+				{#if question.field === 'duration'}
+					<table class="table">
+						<thead>
 							<tr>
 								{#each durationFields as f}
-									<td class:text-green-500={a.answer} class:text-red-500={!a.answer}
-										>{a.value[f.field]}</td
-									>
+									<th class="font-bold">{f.label}</th>
 								{/each}
 							</tr>
-						{/each}
-					</tbody>
-				</table>
-			{:else}
-				{#each combined as a}
-					<div class:text-green-500={a.answer} class:text-red-500={!a.answer} class=" my-3 ml-7">
-						{a.value}
-					</div>
-				{/each}
+						</thead>
+						<tbody>
+							{#each combined as a}
+								<tr>
+									{#each durationFields as f}
+										<td class:text-green-500={a.answer} class:text-red-500={!a.answer}
+											>{a.value[f.field]}</td
+										>
+									{/each}
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				{:else}
+					{#each combined as a}
+						<div class:text-green-500={a.answer} class:text-red-500={!a.answer} class=" my-3 ml-7">
+							{a.value}
+						</div>
+					{/each}
+				{/if}
 			{/if}
 		</div>
 		<div class="text-2xl">
