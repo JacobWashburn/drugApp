@@ -2,7 +2,7 @@
 	import { services } from '$lib/feathers/index.js';
 	import { goto } from '$app/navigation';
 
-	let { Quizes } = services;
+	let { Quizes, Takes } = services;
 	let fieldNames = {
 		class: 'Class',
 		mechanism: 'Mechanism',
@@ -44,7 +44,15 @@
 				class="fas fa-trash-alt"
 				role="none"
 				on:click|stopPropagation={() => {
-					Quizes.remove(q._id).then((res) => {});
+					Quizes.remove(q._id)
+						.then((res) => {})
+						.then(() => {
+							$Takes.arr
+								.filter((t) => t.quizID === q._id)
+								.forEach((take) => {
+									Takes.remove(take._id);
+								});
+						});
 				}}
 			></i>
 			<div class="h2 text-center">{q.name}</div>

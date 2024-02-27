@@ -19,8 +19,10 @@
 		duration: 'Duration',
 		notes: 'Considerations'
 	};
+	const totalQs =
+		data.quiz.fields.length * data.quiz.drugs.filter((drug) => !!$Drugs.key[drug.drugID]).length;
 	const take = () => {
-		let drugList = data.quiz.drugs.map((d) => $Drugs.key[d.drugID]);
+		let drugList = data.quiz.drugs.map((d) => $Drugs.key[d.drugID]).filter((d) => !!d);
 		const quizFields = Object.keys(fieldNames).reduce((acc, curr) => {
 			acc[curr] = data.quiz.fields.includes(curr);
 			return acc;
@@ -37,7 +39,7 @@
 	};
 </script>
 
-<div class="w-full flex h-full flex-col justify-center items-center p-12">
+<div class="w-full h-full flex flex-col justify-start items-center p-12">
 	<div class="self-start">
 		<i
 			class="fas fa-arrow-alt-circle-left text-2xl"
@@ -48,6 +50,7 @@
 		></i>
 	</div>
 	<div class="h2">{data.quiz.name}</div>
+	<div class="text-2xl mt-3">{totalQs} Questions</div>
 	<div class="flex space-x-12">
 		<button class="text-xl btn border border-white mt-12" on:click|stopPropagation={take}
 			>Take Quiz
@@ -61,20 +64,22 @@
 		</button>
 	</div>
 
-	<div class="flex flex-wrap space-x-12 mt-12">
-		{#each data.quiz.drugs as d}
+	<div class="flex flex-wrap space-x-12 my-12 max-h-250 overflow-y-auto">
+		{#each data.quiz.drugs.filter((drug) => !!$Drugs.key[drug.drugID]) as d}
 			<div class="h3 mb-7">{d.name}</div>
 		{/each}
 	</div>
-	<div class="table-container flex-1 overflow-y-auto">
-		<table class="table table-interactive">
+	<div class="table-container max-h-450">
+		<table class="table">
 			<thead>
 				<tr>
-					<th class="min-w-250">Submitted</th>
-					<th class="min-w-150">Time</th>
-					<th class="min-w-150">Score</th>
+					<th> Submitted</th>
+					<th> Time</th>
+					<th> Score</th>
 					{#each data.quiz.fields as f}
-						<th class="min-w-150">{fieldNames[f]}</th>
+						<th>
+							{fieldNames[f]}
+						</th>
 					{/each}
 				</tr>
 			</thead>
@@ -90,14 +95,22 @@
 						}}
 					>
 						{#if !!t.submitted}
-							<td>{t.submitted}</td>
-							<td>{t.time}</td>
+							<td>
+								{t.submitted}
+							</td>
+							<td>
+								{t.time}
+							</td>
 						{:else}
-							<td colspan="2" class="text-red-500">Not Submitted</td>
+							<td colspan="2" class="text-red-500"> Not Submitted</td>
 						{/if}
-						<td>{numeral(t?.score * 0.01).format('0%')}</td>
+						<td>
+							{numeral(t?.score * 0.01).format('0%')}
+						</td>
 						{#each data.quiz.fields as f}
-							<td>{numeral(t[f]?.result * 0.01).format('0%')}</td>
+							<td>
+								{numeral(t[f]?.result * 0.01).format('0%')}
+							</td>
 						{/each}
 					</tr>
 				{/each}
@@ -105,3 +118,10 @@
 		</table>
 	</div>
 </div>
+
+<style>
+	.table thead th {
+		inset: 0;
+		position: sticky;
+	}
+</style>

@@ -18,9 +18,7 @@
 		duration: 'Duration',
 		notes: 'Considerations'
 	};
-	let questions = data.quiz.fields.reduce((acc, field) => {
-		let answers = [...data.take[field].correct, ...data.take[field].wrong];
-	}, {});
+
 	let openModal = (question) => {
 		modalStore.trigger({
 			type: 'component',
