@@ -54,7 +54,7 @@
 	};
 </script>
 
-<div class="w-full h-full flex flex-col justify-start items-center p-12">
+<div class="w-full flex flex-col justify-start items-center p-12">
 	<div class="self-start w-full flex justify-between">
 		<i
 			class="fas fa-arrow-alt-circle-left text-2xl"
