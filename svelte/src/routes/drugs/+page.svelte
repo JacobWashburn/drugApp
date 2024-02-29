@@ -4,14 +4,16 @@
 	import NewDrug from '$lib/modals/NewDrug.svelte';
 	import clone from 'lodash.clonedeep';
 	import InputGroup from '../InputGroup.svelte';
-	import { goto } from '$app/navigation';
+	import { goto, replaceState } from '$app/navigation';
 	import DeleteDrug from './DeleteDrug.svelte';
+	import { page } from '$app/stores';
 
+	$: console.log($page);
 	let modalStore = getModalStore();
 	let { Drugs } = services;
-	let search = '';
-	let alphabetSearch = null;
-	let settings = {
+	let search = $page.state.search ?? '';
+	let alphabetSearch = $page.state.alphabetSearch ?? null;
+	let settings = $page.state.settings ?? {
 		page: 0,
 		limit: 5,
 		size: $Drugs.arr.filter((d) => {
@@ -40,6 +42,10 @@
 		})
 		.sort(({ name: a }, { name: b }) => (a === b ? 0 : a < b ? -1 : 1))
 		.slice(settings.page * settings.limit, settings.page * settings.limit + settings.limit);
+	$: setState(settings);
+	const setState = (something) => {
+		replaceState('', { search, alphabetSearch, settings });
+	};
 	// prettier-ignore
 	let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 </script>
@@ -95,6 +101,7 @@
 					on:input={() => {
 						alphabetSearch = null;
 						settings.page = 0;
+						setState();
 					}}
 					bind:value={search}
 				/>
@@ -122,6 +129,7 @@
 						settings.page = 0;
 						alphabetSearch = char;
 						search = '';
+						setState();
 					}}
 				>
 					{char.toUpperCase()}
@@ -134,7 +142,7 @@
 				<div
 					class=" shrink-0 card space-y-3 card-hover cursor-pointer p-3"
 					role="none"
-					on:click|stopPropagation={() => goto(`/drugs/${drug._id}`)}
+					on:click|stopPropagation={() => goto(`/drugs/${drug._id}`, { state: $page.state })}
 				>
 					<div class="w-full flex justify-between">
 						<i

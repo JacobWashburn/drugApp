@@ -1,6 +1,7 @@
 <script>
 	import { services } from '$lib/feathers/index.js';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	let { Drugs } = services;
 	let fields = [
@@ -59,7 +60,7 @@
 	<div class="self-start">
 		<i
 			class="fas fa-arrow-alt-circle-left text-2xl"
-			on:click|stopPropagation={() => goto('/drugs')}
+			on:click|stopPropagation={() => goto('/drugs', { state: $page.state })}
 			on:keypress={() => {}}
 			role="button"
 			tabindex="-1"
