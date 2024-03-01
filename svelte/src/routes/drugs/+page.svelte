@@ -136,10 +136,10 @@
 			{/each}
 		</div>
 		<Paginator bind:settings showFirstLastButtons={false} />
-		<div class="flex-1 min-w-600 p-3 space-y-3 mt-3 scroll-px-4 flex flex-col overflow-y-auto">
+		<div class="flex-1 w-full p-3 space-y-3 mt-3 scroll-px-4 flex flex-col overflow-y-auto">
 			{#each paginatedRows as drug}
 				<div
-					class=" shrink-0 card space-y-3 card-hover cursor-pointer p-3"
+					class="card space-y-3 card-hover cursor-pointer p-3"
 					role="none"
 					on:click|stopPropagation={() => goto(`/drugs/${drug._id}`, { state: $page.state })}
 				>
