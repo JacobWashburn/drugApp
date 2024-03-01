@@ -1,17 +1,6 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
 
-import { hooks as schemaHooks } from '@feathersjs/schema'
-import {
-  quizesDataValidator,
-  quizesPatchValidator,
-  quizesQueryValidator,
-  quizesResolver,
-  quizesExternalResolver,
-  quizesDataResolver,
-  quizesPatchResolver,
-  quizesQueryResolver
-} from './quizes.schema.js'
-import { QuizesService, getOptions } from './quizes.class.js'
+import { getOptions, QuizesService } from './quizes.class.js'
 
 export const quizesPath = 'quizes'
 export const quizesMethods = ['find', 'get', 'create', 'patch', 'remove']
@@ -31,14 +20,14 @@ export const quizes = (app) => {
   // Initialize hooks
   app.service(quizesPath).hooks({
     around: {
-      all: [schemaHooks.resolveExternal(quizesExternalResolver), schemaHooks.resolveResult(quizesResolver)]
+      all: []
     },
     before: {
-      all: [schemaHooks.validateQuery(quizesQueryValidator), schemaHooks.resolveQuery(quizesQueryResolver)],
+      all: [],
       find: [],
       get: [],
-      create: [schemaHooks.validateData(quizesDataValidator), schemaHooks.resolveData(quizesDataResolver)],
-      patch: [schemaHooks.validateData(quizesPatchValidator), schemaHooks.resolveData(quizesPatchResolver)],
+      create: [],
+      patch: [],
       remove: []
     },
     after: {

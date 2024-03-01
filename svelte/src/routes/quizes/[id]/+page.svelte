@@ -1,10 +1,11 @@
 <script>
-	import { services } from '$lib/feathers/index.js';
+	import { auth, services } from '$lib/feathers/index.js';
 	import { goto } from '$app/navigation';
 	import numeral from 'numeral';
 	import generateQuiz from '$lib/generateQuiz.js';
 	import createTake from '$lib/createTake.js';
 
+	let user = auth.store;
 	let { Drugs } = services;
 	export let data;
 	let fieldNames = {
@@ -19,21 +20,23 @@
 		duration: 'Duration',
 		notes: 'Considerations'
 	};
-	let usedFields = data.takes.reduce((acc, take) => {
-		for (const key of Object.keys(fieldNames)) {
-			if (!acc[key] && !!take[key]) {
-				acc[key] = true;
+	let usedFields = data.takes
+		.filter((t) => t.createdBy === $user.email)
+		.reduce((acc, take) => {
+			for (const key of Object.keys(fieldNames)) {
+				if (!acc[key] && !!take[key]) {
+					acc[key] = true;
+				}
 			}
-		}
-		return acc;
-	}, {});
+			return acc;
+		}, {});
 	for (const field of data.quiz.fields) {
 		if (!usedFields[field]) {
 			console.log(field);
 			usedFields[field] = true;
 		}
 	}
-	console.log(usedFields, data.quiz);
+	console.log($user, data.takes);
 	const totalQs =
 		data.quiz.fields.length * data.quiz.drugs.filter((drug) => !!$Drugs.key[drug.drugID]).length;
 	const take = () => {
@@ -106,7 +109,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each data.takes as t}
+				{#each data.takes.filter((t) => t.createdBy === $user.email) as t}
 					<tr
 						class:cursor-pointer={!!t.submitted}
 						class=""

@@ -1,15 +1,4 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
-import { hooks as schemaHooks } from '@feathersjs/schema'
-import {
-  usersDataResolver,
-  usersDataValidator,
-  usersExternalResolver,
-  usersPatchResolver,
-  usersPatchValidator,
-  usersQueryResolver,
-  usersQueryValidator,
-  usersResolver
-} from './users.schema.js'
 import { getOptions, UsersService } from './users.class.js'
 
 export const usersPath = 'users'
@@ -30,20 +19,14 @@ export const users = (app) => {
   // Initialize hooks
   app.service(usersPath).hooks({
     around: {
-      all: [schemaHooks.resolveExternal(usersExternalResolver), schemaHooks.resolveResult(usersResolver)],
+      all: []
+    },
+    before: {
+      all: [],
       find: [],
       get: [],
       create: [],
-      update: [],
       patch: [],
-      remove: []
-    },
-    before: {
-      all: [schemaHooks.validateQuery(usersQueryValidator), schemaHooks.resolveQuery(usersQueryResolver)],
-      find: [],
-      get: [],
-      create: [schemaHooks.validateData(usersDataValidator), schemaHooks.resolveData(usersDataResolver)],
-      patch: [schemaHooks.validateData(usersPatchValidator), schemaHooks.resolveData(usersPatchResolver)],
       remove: []
     },
     after: {

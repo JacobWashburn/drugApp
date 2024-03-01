@@ -1,8 +1,10 @@
 <script>
-	import { services } from '$lib/feathers/index.js';
+	import { auth, services } from '$lib/feathers/index.js';
 	import { goto } from '$app/navigation';
 
-	let { Quizes, Takes } = services;
+	let user = auth.store;
+
+	let { Quizes, Takes, Users } = services;
 	let fieldNames = {
 		class: 'Class',
 		mechanism: 'Mechanism',
@@ -61,6 +63,7 @@
 					<div class="card chip">{fieldNames[f]}</div>
 				{/each}
 			</div>
+			<div class="text-xs">created by: {q.createdBy}</div>
 		</div>
 	{/each}
 </div>

@@ -21,10 +21,16 @@ const createService = ({ name, servicePath }) => {
 	//   console.log('------------->>>> beforeHook - context.params:', context.params);
 	//   console.log('------------->>>> beforeHook - context.data:', context.data);
 	// };
+	const created = (context) => {
+		if (context.self.model.servicePath !== 'users') {
+			context.data['createdBy'] = auth.user.email;
+			context.data['createdAt'] = dayjs().format('YYYY/MM/DD HH:mm:ss');
+		}
+		return context;
+	};
 	const updated = (context) => {
-		context.data['Updated By'] = auth.user.email;
-		context.data['Updated At'] = dayjs().format('YYYY/MM/DD HH:mm:ss');
-
+		context.data['updatedBy'] = auth.user.email;
+		context.data['updatedAt'] = dayjs().format('YYYY/MM/DD HH:mm:ss');
 		return context;
 	};
 
@@ -34,7 +40,7 @@ const createService = ({ name, servicePath }) => {
 			all: [],
 			find: [],
 			get: [],
-			create: [],
+			create: [created],
 			update: [],
 			patch: [updated],
 			remove: []

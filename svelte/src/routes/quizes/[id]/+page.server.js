@@ -4,9 +4,9 @@ let { Quizes, Takes } = services;
 
 export const load = async ({ params }) => {
 	let quiz = await Quizes.fetchOne(params.id);
-	let takes = await Takes.fetch();
+	let takes = await Takes.fetch({ query: { quizID: quiz._id } });
 	return {
 		quiz,
-		takes: takes.data.filter((t) => t.quizID === quiz._id)
+		takes: takes.data
 	};
 };
