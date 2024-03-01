@@ -63,7 +63,7 @@
 					<div class="card chip">{fieldNames[f]}</div>
 				{/each}
 			</div>
-			<div class="text-xs">created by: {q.createdBy}</div>
+			<div class="text-xs my-2">created by: {q.createdBy}</div>
 		</div>
 	{/each}
 </div>

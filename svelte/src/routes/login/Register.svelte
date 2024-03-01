@@ -10,6 +10,7 @@
 <div class="flex flex-col justify-start items-center">
 	<form
 		action="?/register"
+		class="flex flex-col space-y-2"
 		method="post"
 		use:enhance={({ formData, action, cancel }) => {
 			return async ({ result: { data }, update }) => {

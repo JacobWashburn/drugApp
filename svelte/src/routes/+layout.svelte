@@ -10,6 +10,7 @@
 	import { initializeStores, Modal, storePopup, Toast } from '@skeletonlabs/skeleton';
 	import Spinner from '$lib/components/Spinner.svelte';
 
+	let user = auth.store;
 	$: if (browser && $page.route) {
 		auth
 			.reAuthenticate()
@@ -32,10 +33,15 @@
 <!--Toasts initilization-->
 <Toast position="bl" />
 
-<div class="w-full h-[100vh] flex flex-col justify-start items-center overflow-y-auto">
+<div class="w-full relative h-[100vh] flex flex-col justify-start items-center overflow-y-auto">
 	{#await load()}
 		<Spinner />
 	{:then data}
+		{#if $user?.email}
+			<div class="flex justify-center w-full absolute top-0 left-0">
+				<div class="text-2xl">Welcome {$user.email}</div>
+			</div>
+		{/if}
 		<slot />
 	{:catch err}
 		{err.message}

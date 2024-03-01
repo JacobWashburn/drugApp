@@ -66,7 +66,9 @@
 			tabindex="-1"
 		></i>
 	</div>
-	<div class="h1 mb-7">{drug?.name}</div>
+	<div class="h1 mb-2">{drug?.name}</div>
+	<div class="text-xs mb-1">Submitted by: {drug.createdBy || 'Unknown'}</div>
+	<div class="text-xs mb-7">Last Edit by: {drug.updatedBy || 'Unknown'}</div>
 	{#each fields as f}
 		<div class="flex w-full border border-surface-500 p-3">
 			<div class="text-2xl w-1/4 mr-7">{f.label}</div>

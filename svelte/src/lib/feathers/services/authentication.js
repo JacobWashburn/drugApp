@@ -19,10 +19,11 @@ class Authentication {
 
 	logOut() {
 		this.app.logout();
+		window.localStorage.removeItem('feathers-jwt');
 		this.isAuthenticated = false;
 		this.accessToken = null;
 		this.user = null;
-		this.store.set(null);
+		this.store.set({});
 		this.expireTimeout = null;
 		goto('/login');
 	}

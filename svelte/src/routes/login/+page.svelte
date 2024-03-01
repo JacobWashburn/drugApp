@@ -7,9 +7,10 @@
 	let register = false;
 </script>
 
-<div class="flex flex-col justify-start items-center">
+<div class="flex flex-col h-full justify-center items-center">
 	{#if !register}
 		<form
+			class="flex flex-col space-y-2"
 			action="?/login"
 			method="post"
 			use:enhance={({ formData, action, cancel }) => {
