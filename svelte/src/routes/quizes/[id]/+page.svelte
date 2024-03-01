@@ -66,13 +66,15 @@
 			role="button"
 			tabindex="-1"
 		></i>
-		<i
-			class="fas fa-pencil-alt text-2xl"
-			on:click|stopPropagation={() => goto(`/quizes/${data.quiz._id}/edit`)}
-			on:keypress={() => {}}
-			role="button"
-			tabindex="-1"
-		></i>
+		{#if data.quiz.createdBy === $user.email}
+			<i
+				class="fas fa-pencil-alt text-2xl"
+				on:click|stopPropagation={() => goto(`/quizes/${data.quiz._id}/edit`)}
+				on:keypress={() => {}}
+				role="button"
+				tabindex="-1"
+			></i>
+		{/if}
 	</div>
 	<div class="h2">{data.quiz.name}</div>
 	<div class="text-2xl mt-3">{totalQs} Questions</div>
