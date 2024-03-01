@@ -6,8 +6,6 @@ import {
   usersExternalResolver,
   usersPatchResolver,
   usersPatchValidator,
-  usersQueryResolver,
-  usersQueryValidator,
   usersResolver
 } from './users.schema.js'
 import { getOptions, UsersService } from './users.class.js'
@@ -39,7 +37,7 @@ export const users = (app) => {
       remove: []
     },
     before: {
-      all: [schemaHooks.validateQuery(usersQueryValidator), schemaHooks.resolveQuery(usersQueryResolver)],
+      all: [],
       find: [],
       get: [],
       create: [schemaHooks.validateData(usersDataValidator), schemaHooks.resolveData(usersDataResolver)],
