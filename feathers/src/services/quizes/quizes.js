@@ -31,7 +31,12 @@ export const quizes = (app) => {
       remove: []
     },
     after: {
-      all: []
+      all: [],
+      find: [],
+      get: [],
+      create: [],
+      patch: [],
+      remove: []
     },
     error: {
       all: []

@@ -102,7 +102,7 @@ feathersClient.service(servicePath).hooks({
 		remove: []
 	},
 	error: {
-		all: [(ctx) => console.log(ctx)],
+		all: [(ctx) => console.log('ctx', ctx)],
 		find: [],
 		get: [],
 		create: [],

@@ -29,11 +29,11 @@
 	>
 		<InputGroup>
 			<div class="w-100">Email</div>
-			<input class="" name="email" type="email" />
+			<input class="" name="email" required type="email" />
 		</InputGroup>
 		<InputGroup>
 			<div class="w-100">Password</div>
-			<input class="" name="password" type="password" />
+			<input class="" name="password" required type="password" />
 		</InputGroup>
 		{#if errorMessage}
 			<div class="text-2xl">{errorMessage}</div>

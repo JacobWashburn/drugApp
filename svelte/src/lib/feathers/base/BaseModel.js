@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 import { Timer } from '$lib/timer.js';
 
 class BaseModel {
-	constructor({ servicePath, service, idField = '_id', restrictedBy = 'Hospital Number' }) {
+	constructor({ servicePath, service, idField = '_id', restrictedBy = '_id' }) {
 		this.servicePath = servicePath;
 		this.service = service;
 		this.idField = idField;
@@ -51,7 +51,7 @@ class BaseModel {
 						self._update((s) => {
 							let done = updateStore(
 								{
-									idField: this.idField,
+									idField: self.idField,
 									store: s,
 									remove: event === 'removed',
 									create: event === 'created',

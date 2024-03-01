@@ -42,21 +42,26 @@
 			role="none"
 			on:click|stopPropagation={() => goto(`/quizes/${q._id}`)}
 		>
-			<i
-				class="fas fa-trash-alt"
-				role="none"
-				on:click|stopPropagation={() => {
-					Quizes.remove(q._id)
-						.then((res) => {})
-						.then(() => {
-							$Takes.arr
-								.filter((t) => t.quizID === q._id)
-								.forEach((take) => {
-									Takes.remove(take._id);
-								});
-						});
-				}}
-			></i>
+			{#if q.isDeleted}
+				<div class="text-2xl text-red-500">Deleted</div>
+			{/if}
+			{#if $user.email === q.createdBy}
+				<i
+					class="fas fa-trash-alt"
+					role="none"
+					on:click|stopPropagation={() => {
+						Quizes.remove(q._id)
+							.then((res) => {})
+							.then(() => {
+								$Takes.arr
+									.filter((t) => t.quizID === q._id)
+									.forEach((take) => {
+										Takes.remove(take._id);
+									});
+							});
+					}}
+				></i>
+			{/if}
 			<div class="h2 text-center">{q.name}</div>
 			<div class="flex flex-wrap">
 				{#each q.fields as f}

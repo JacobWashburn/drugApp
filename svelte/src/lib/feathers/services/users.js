@@ -46,7 +46,7 @@ feathersClient.service(servicePath).hooks({
 		remove: []
 	},
 	after: {
-		all: [(context) => console.log('users', context.method, context.result)],
+		all: [],
 		find: [],
 		get: [],
 		create: [],

@@ -56,7 +56,9 @@ app.hooks({
   around: {
     all: [logError]
   },
-  before: {},
+  before: {
+    find: []
+  },
   after: {},
   error: {}
 })

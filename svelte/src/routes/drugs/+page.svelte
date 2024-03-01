@@ -8,7 +8,6 @@
 	import DeleteDrug from './DeleteDrug.svelte';
 	import { page } from '$app/stores';
 
-	$: console.log($page);
 	let modalStore = getModalStore();
 	let { Drugs } = services;
 	let search = $page.state.search ?? '';

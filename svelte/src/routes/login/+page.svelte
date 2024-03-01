@@ -25,11 +25,11 @@
 		>
 			<InputGroup>
 				<div class="w-100">Email</div>
-				<input class="" name="email" type="email" />
+				<input class="" name="email" required type="email" />
 			</InputGroup>
 			<InputGroup>
 				<div class="w-100">Password</div>
-				<input class="" name="password" type="password" />
+				<input class="" name="password" required type="password" />
 			</InputGroup>
 			<div class="flex justify-between w-full">
 				<button class="btn border border-white self-center" type="submit">Login</button>

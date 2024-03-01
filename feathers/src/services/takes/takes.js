@@ -31,7 +31,12 @@ export const takes = (app) => {
       remove: []
     },
     after: {
-      all: []
+      all: [],
+      find: [],
+      get: [],
+      create: [],
+      patch: [],
+      remove: []
     },
     error: {
       all: []

@@ -26,12 +26,21 @@ const createService = ({ name, servicePath }) => {
 			context.data['createdBy'] = auth.user.email;
 			context.data['createdAt'] = dayjs().format('YYYY/MM/DD HH:mm:ss');
 		}
+		context.data['isDeleted'] = false;
 		return context;
 	};
 	const updated = (context) => {
 		context.data['updatedBy'] = auth.user.email;
 		context.data['updatedAt'] = dayjs().format('YYYY/MM/DD HH:mm:ss');
 		return context;
+	};
+	const removed = (context) => {
+		return context.self
+			.patch(context.id, { isDeleted: true, deletedBy: auth.user.email })
+			.then((res) => {
+				context.result = res;
+				return context;
+			});
 	};
 
 	// Setup client-side Feathers hooks.
@@ -43,7 +52,7 @@ const createService = ({ name, servicePath }) => {
 			create: [created],
 			update: [],
 			patch: [updated],
-			remove: []
+			remove: [removed]
 		},
 		after: {
 			all: [],
@@ -55,7 +64,7 @@ const createService = ({ name, servicePath }) => {
 			remove: []
 		},
 		error: {
-			all: [(ctx) => console.log(ctx)],
+			all: [(ctx) => console.log('error hook', ctx)],
 			find: [],
 			get: [],
 			create: [],

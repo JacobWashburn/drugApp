@@ -11,7 +11,7 @@ export const usersSchema = Type.Object(
     email: Type.String({ format: 'email' }),
     password: Type.Optional(Type.String())
   },
-  { $id: 'Users', additionalProperties: false }
+  { $id: 'Users', additionalProperties: true }
 )
 export const usersValidator = getValidator(usersSchema, dataValidator)
 export const usersResolver = resolve({})

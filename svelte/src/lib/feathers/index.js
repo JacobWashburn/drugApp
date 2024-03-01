@@ -11,7 +11,9 @@ export const services = schemas
 	}, {});
 
 export const load = () => {
-	return Promise.all(Object.values(services).map((s) => s.fetch())).catch((err) => {
+	return Promise.all(
+		Object.values(services).map((s) => s.fetch({ query: { isDeleted: false } }))
+	).catch((err) => {
 		console.log('load error', err);
 	});
 };
