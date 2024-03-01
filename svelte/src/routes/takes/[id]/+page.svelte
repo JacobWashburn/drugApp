@@ -66,7 +66,7 @@
 			data.take.questions?.[currentIndex]?.answers?.wrong?.length > 0;
 </script>
 
-<div class="flex flex-col justify-center items-center space-y-7">
+<div class="flex flex-col justify-center items-center space-y-7 p-12">
 	<div class="h1">{data.quiz.name}</div>
 	<div class="text-2xl w-150 text-center">
 		{padValue(hours)}:{padValue(minutes)}:{padValue(seconds)}
