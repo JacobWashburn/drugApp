@@ -18,7 +18,7 @@ module.exports = {
       header: {
         typ: 'access'
       },
-      audience: 'https://yourdomain.com',
+      audience: 'https://drugAop.com',
       algorithm: 'HS256',
       expiresIn: '1d'
     },

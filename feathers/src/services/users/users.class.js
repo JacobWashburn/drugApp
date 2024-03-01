@@ -4,8 +4,12 @@ import { MongoDBService } from '@feathersjs/mongodb'
 export class UsersService extends MongoDBService {}
 
 export const getOptions = (app) => {
+  let Model = app.get('mongodbClient').then((db) => {
+    db.collection('users').createIndex({ email: 1 }, { unique: true })
+    return db.collection('users')
+  })
   return {
     paginate: app.get('paginate'),
-    Model: app.get('mongodbClient').then((db) => db.collection('users'))
+    Model
   }
 }

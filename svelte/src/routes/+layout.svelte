@@ -37,5 +37,7 @@
 		<Spinner />
 	{:then data}
 		<slot />
+	{:catch err}
+		{err.message}
 	{/await}
 </div>

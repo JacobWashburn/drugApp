@@ -2,13 +2,13 @@
 	import { goto } from '$app/navigation';
 </script>
 
-<div class="flex w-full h-[100vh] flex-col justify-center items-center border border-white">
+<div class="flex w-full h-[100vh] flex-col justify-center items-center">
 	<button
 		class="btn variant-filled-surface border border-black"
 		on:click|stopPropagation={() => {
 			goto('/drugs');
 		}}
-		>Review Drugs
+		>Drugs
 	</button>
 	<button
 		class="btn variant-filled-surface border border-black"
