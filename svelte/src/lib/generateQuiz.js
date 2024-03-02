@@ -26,7 +26,7 @@ function generateQuiz(fields, drugList, drugs, name) {
 					if (Array.isArray(keyed[k])) {
 						keyed[k] = keyed[k]
 							.filter((value) => {
-								return !foundValues[value];
+								return !foundValues[value.toLowerCase()];
 							})
 							.map((v) => {
 								if (typeof v === 'string') {
