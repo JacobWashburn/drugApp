@@ -64,7 +64,7 @@ function generateQuiz(fields, drugList, drugs, name) {
 				let wrongs = [];
 				if (Array.isArray(drugValues[key])) {
 					otherAmount = 8 - drugValues[key].slice(0, trueAmount).length;
-					drugValues[key].forEach((v, i) => {
+					drugValues[key].forEach((v) => {
 						trues.push({ value: v, answer: true });
 					});
 				} else {
