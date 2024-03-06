@@ -26,7 +26,7 @@ function generateQuiz(fields, drugList, drugs, name) {
 					if (Array.isArray(keyed[k])) {
 						keyed[k] = keyed[k]
 							.filter((value) => {
-								return !foundValues[value];
+								return !foundValues[value.toLowerCase()];
 							})
 							.map((v) => {
 								if (typeof v === 'string') {
@@ -64,7 +64,7 @@ function generateQuiz(fields, drugList, drugs, name) {
 				let wrongs = [];
 				if (Array.isArray(drugValues[key])) {
 					otherAmount = 8 - drugValues[key].slice(0, trueAmount).length;
-					drugValues[key].forEach((v, i) => {
+					drugValues[key].forEach((v) => {
 						trues.push({ value: v, answer: true });
 					});
 				} else {
