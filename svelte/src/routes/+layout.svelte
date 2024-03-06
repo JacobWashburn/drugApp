@@ -11,7 +11,7 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 
 	let user = auth.store;
-	$: if (browser && $page.route) {
+	$: if (browser && $page.route && !['/login', '/register'].includes($page.route.id)) {
 		auth
 			.reAuthenticate()
 			.then((res) => {
@@ -31,7 +31,7 @@
 <Modal components={modals} regionBackdrop="!bg-gray-300/60" />
 
 <!--Toasts initilization-->
-<Toast position="bl" />
+<Toast max={1} position="bl" zIndex="z-[9999]" />
 
 <div class="w-full relative h-[100vh] flex flex-col justify-start items-center overflow-y-auto">
 	{#await load()}
@@ -39,7 +39,7 @@
 	{:then data}
 		{#if $user?.email}
 			<div class="flex justify-center w-full absolute top-0 left-0">
-				<div class="text-2xl">Welcome {$user.email}</div>
+				<div class="text-2xl">Welcome {$user.username}</div>
 			</div>
 		{/if}
 		<slot />

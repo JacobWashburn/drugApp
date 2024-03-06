@@ -1,6 +1,7 @@
 import schemas from './services/schemas.js';
 import Authentication from './services/authentication.js';
 import createService from './services/create_service.js';
+import { browser } from '$app/environment';
 
 export const auth = Authentication;
 export const services = schemas
@@ -11,9 +12,15 @@ export const services = schemas
 	}, {});
 
 export const load = () => {
-	return Promise.all(
-		Object.values(services).map((s) => s.fetch({ query: { isDeleted: false } }))
-	).catch((err) => {
-		console.log('load error', err);
-	});
+	if (browser) {
+		return Promise.all(
+			Object.values(services).map((s) =>
+				s.fetch({ query: { isDeleted: false } }).then((res) => {
+					console.log('load', s.servicePath, res);
+				})
+			)
+		).catch((err) => {
+			console.log('load error', err);
+		});
+	} else return Promise.resolve();
 };

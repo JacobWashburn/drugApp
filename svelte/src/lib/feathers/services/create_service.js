@@ -23,20 +23,20 @@ const createService = ({ name, servicePath }) => {
 	// };
 	const created = (context) => {
 		if (context.self.model.servicePath !== 'users') {
-			context.data['createdBy'] = auth.user.email;
+			context.data['createdBy'] = auth.user._id;
 			context.data['createdAt'] = dayjs().format('YYYY/MM/DD HH:mm:ss');
 		}
 		context.data['isDeleted'] = false;
 		return context;
 	};
 	const updated = (context) => {
-		context.data['updatedBy'] = auth.user.email;
+		context.data['updatedBy'] = auth.user._id;
 		context.data['updatedAt'] = dayjs().format('YYYY/MM/DD HH:mm:ss');
 		return context;
 	};
 	const removed = (context) => {
 		return context.self
-			.patch(context.id, { isDeleted: true, deletedBy: auth.user.email })
+			.patch(context.id, { isDeleted: true, deletedBy: auth.user._id })
 			.then((res) => {
 				context.result = res;
 				return context;

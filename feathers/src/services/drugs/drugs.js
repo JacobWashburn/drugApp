@@ -1,6 +1,14 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
-
+import { hooks as schemaHooks } from '@feathersjs/schema'
 import { DrugsService, getOptions } from './drugs.class.js'
+import {
+  drugsDataResolver,
+  drugsDataValidator,
+  drugsExternalResolver,
+  drugsPatchResolver,
+  drugsPatchValidator,
+  drugsResolver
+} from './drugs.schema.js'
 
 export const drugsPath = 'drugs'
 export const drugsMethods = ['find', 'get', 'create', 'patch', 'remove']
@@ -20,14 +28,14 @@ export const drugs = (app) => {
   // Initialize hooks
   app.service(drugsPath).hooks({
     around: {
-      all: []
+      all: [schemaHooks.resolveExternal(drugsExternalResolver), schemaHooks.resolveResult(drugsResolver)]
     },
     before: {
       all: [],
       find: [],
       get: [],
-      create: [],
-      patch: [],
+      create: [schemaHooks.validateData(drugsDataValidator), schemaHooks.resolveData(drugsDataResolver)],
+      patch: [schemaHooks.validateData(drugsPatchValidator), schemaHooks.resolveData(drugsPatchResolver)],
       remove: []
     },
     after: {

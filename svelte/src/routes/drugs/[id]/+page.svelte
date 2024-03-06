@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
-	let { Drugs } = services;
+	let { Drugs, Users } = services;
 	let fields = [
 		{
 			label: 'Class',
@@ -67,8 +67,8 @@
 		></i>
 	</div>
 	<div class="h1 mb-2">{drug?.name}</div>
-	<div class="text-xs mb-1">Submitted by: {drug.createdBy || 'Unknown'}</div>
-	<div class="text-xs mb-7">Last Edit by: {drug.updatedBy || 'Unknown'}</div>
+	<div class="text-xs mb-1">Submitted by: {$Users.key[drug.createdBy]?.username || ''}</div>
+	<div class="text-xs mb-7">Last Edit by: {$Users.key[drug.updatedBy]?.username || ''}</div>
 	{#each fields as f}
 		<div class="flex w-full border border-surface-500 p-3">
 			<div class="text-2xl w-1/4 mr-7">{f.label}</div>

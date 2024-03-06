@@ -91,9 +91,9 @@
 		</button>
 	</div>
 
-	<div class="flex flex-wrap space-x-12 my-3 max-h-250 overflow-y-auto">
+	<div class="flex flex-wrap my-3 max-h-250 overflow-y-auto">
 		{#each data.quiz.drugs.filter((drug) => !!$Drugs.key[drug.drugID]) as d}
-			<div class="h3 mb-7">{d.name}</div>
+			<div class="h3 mb-7 w-30 mr-[2%]">{d.name}</div>
 		{/each}
 	</div>
 	<div class="table-container flex-1">
@@ -117,7 +117,7 @@
 						class=""
 						on:click|stopPropagation={() => {
 							if (!!t.submitted) {
-								goto(`/quizes/${data.quiz._id}/${t._id}`);
+								goto(`/quizes/${data.quiz._id}/takes/${t._id}`);
 							} else goto(`/takes/${t._id}`);
 						}}
 					>

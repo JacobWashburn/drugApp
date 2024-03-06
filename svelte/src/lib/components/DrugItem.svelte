@@ -31,7 +31,20 @@
 					<div class="flex justify-center items-center">
 						<textarea
 							class="bg-transparent"
+							id={`${field}-${i}`}
 							on:input={() => dispatch('change')}
+							on:keypress={(e) => {
+								console.log(e);
+								if (e.key === 'Enter') {
+									newItem(field);
+									setTimeout(() => {
+										let next = document.getElementById(`${field}-${i + 1}`);
+										if (next) {
+											next.focus();
+										}
+									}, 100);
+								}
+							}}
 							bind:value
 							rows="2"
 							cols="100"

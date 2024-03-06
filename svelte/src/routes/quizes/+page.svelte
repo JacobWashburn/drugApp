@@ -45,7 +45,7 @@
 			{#if q.isDeleted}
 				<div class="text-2xl text-red-500">Deleted</div>
 			{/if}
-			{#if $user.email === q.createdBy}
+			{#if $user._id === q.createdBy}
 				<i
 					class="fas fa-trash-alt"
 					role="none"
@@ -66,7 +66,7 @@
 					<div class="card chip">{fieldNames[f]}</div>
 				{/each}
 			</div>
-			<div class="text-xs my-2">created by: {q.createdBy}</div>
+			<div class="text-xs my-2">created by: {$Users.key[q.createdBy].username}</div>
 		</div>
 	{/each}
 </div>

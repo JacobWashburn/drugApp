@@ -1,8 +1,10 @@
 <script>
 	import { services } from '$lib/feathers';
-	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import InputGroup from '../../routes/InputGroup.svelte';
 	import DrugItem from '$lib/components/DrugItem.svelte';
+
+	const toastStore = getToastStore();
 
 	let modalStore = getModalStore();
 
@@ -76,7 +78,10 @@
 		}
 		timeout = setTimeout(() => {
 			Drugs.patch(newDrug._id, newDrug).then(() => {
-				console.log('change saved');
+				toastStore.trigger({
+					message: `Saved!`,
+					timeout: 2000
+				});
 			});
 		}, 1000);
 	};
@@ -91,17 +96,6 @@
 	const newDuration = () => {
 		newDrug.duration = [...newDrug.duration, { onset: '', peak: '', duration: '' }];
 		onChange();
-	};
-
-	const create = () => {
-		Drugs.create(newDrug).then((res) => {
-			modalStore.close();
-		});
-	};
-	const save = () => {
-		Drugs.patch(newDrug._id, newDrug).then((res) => {
-			modalStore.close();
-		});
 	};
 </script>
 
@@ -177,19 +171,7 @@
 	</div>
 	<div class="flex space-x-7">
 		<button class="btn border border-black bg-surface-400" on:click={modalStore.close}
-			>Cancel
-		</button>
-		<button
-			class="btn border border-black bg-surface-400"
-			class:hidden={!!newDrug._id}
-			on:click={create}
-			>Create
-		</button>
-		<button
-			class="btn border border-black bg-surface-400"
-			class:hidden={!newDrug._id}
-			on:click={save}
-			>Save
+			>Close
 		</button>
 	</div>
 </div>

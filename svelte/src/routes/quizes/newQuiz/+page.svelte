@@ -58,6 +58,9 @@
 		acc[curr.field] = all;
 		return acc;
 	}, {});
+	$: ready =
+		((amount !== null && amount > 0) || selection.length > 0) &&
+		Object.values(quizFields).filter((v) => v).length > 0;
 	let generate = () => {
 		generating = true;
 		let list;
@@ -116,9 +119,10 @@
 		<div class="">or</div>
 		<div class="">
 			<StringFilter
-				bind:chips={selection}
+				chips={selection}
 				drugs={$Drugs.arr.sort(({ name: a }, { name: b }) => (a === b ? 0 : a < b ? -1 : 1))}
 				on:change={(e) => {
+					console.log('drug selection change', e.detail);
 					amount = null;
 					selection = e.detail;
 				}}
@@ -143,7 +147,10 @@
 		</div>
 	</div>
 	<div class="mt-12">
-		<button class="btn border-white border bg-secondary-400" on:click={generate}
+		<button
+			class="btn border-white border bg-secondary-400"
+			disabled={!ready}
+			on:click|stopPropagation={generate}
 			>Generate New Quiz
 		</button>
 	</div>

@@ -6,7 +6,10 @@ import { dataValidator, queryValidator } from '../../validators.js'
 // Main data model schema
 export const drugsSchema = Type.Object(
   {
-    _id: ObjectIdSchema()
+    _id: ObjectIdSchema(),
+    createdBy: ObjectIdSchema(),
+    updatedBy: Type.Optional(ObjectIdSchema()),
+    deletedBy: Type.Optional(ObjectIdSchema())
   },
   { $id: 'Drugs', additionalProperties: true }
 )

@@ -9,7 +9,10 @@ export const usersSchema = Type.Object(
   {
     _id: ObjectIdSchema(),
     email: Type.String({ format: 'email' }),
-    password: Type.Optional(Type.String())
+    password: Type.String(),
+    username: Type.String(),
+    updatedBy: Type.Optional(ObjectIdSchema()),
+    deletedBy: Type.Optional(ObjectIdSchema())
   },
   { $id: 'Users', additionalProperties: true }
 )

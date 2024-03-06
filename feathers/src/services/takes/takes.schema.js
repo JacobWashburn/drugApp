@@ -8,7 +8,10 @@ export const takesSchema = Type.Object(
   {
     _id: ObjectIdSchema(),
     submitted: Type.String(),
-    quizID: ObjectIdSchema()
+    quizID: ObjectIdSchema(),
+    createdBy: ObjectIdSchema(),
+    updatedBy: Type.Optional(ObjectIdSchema()),
+    deletedBy: Type.Optional(ObjectIdSchema())
   },
   { $id: 'Takes', additionalProperties: true }
 )

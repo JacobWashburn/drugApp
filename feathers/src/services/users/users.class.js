@@ -6,6 +6,7 @@ export class UsersService extends MongoDBService {}
 export const getOptions = (app) => {
   let Model = app.get('mongodbClient').then((db) => {
     db.collection('users').createIndex({ email: 1 }, { unique: true })
+    db.collection('users').createIndex({ username: 1 }, { unique: true })
     return db.collection('users')
   })
   return {

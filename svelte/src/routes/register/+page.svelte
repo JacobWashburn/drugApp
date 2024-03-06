@@ -3,11 +3,10 @@
 	import { enhance } from '$app/forms';
 	import InputGroup from '../InputGroup.svelte';
 
-	export let register;
 	let errorMessage = null;
 </script>
 
-<div class="flex flex-col justify-start items-center">
+<div class="flex flex-col h-full justify-center items-center">
 	<form
 		action="?/register"
 		class="flex flex-col space-y-2"
@@ -15,6 +14,7 @@
 		use:enhance={({ formData, action, cancel }) => {
 			return async ({ result: { data }, update }) => {
 				// await update({ reset: false });
+				console.log(data);
 				if (data.success === true) {
 					if (errorMessage) {
 						errorMessage = null;
@@ -22,11 +22,19 @@
 					window.localStorage.setItem('feathers-jwt', data.accessToken);
 					goto('/');
 				} else {
-					errorMessage = 'Email already registered';
+					if (data.error.keyPattern?.username) {
+						errorMessage = 'Username in use';
+					} else if (data.error.keyPattern?.email) {
+						errorMessage = 'Email already registered';
+					} else errorMessage = 'There was a problem signing you up.';
 				}
 			};
 		}}
 	>
+		<InputGroup>
+			<div class="w-100">Username</div>
+			<input class="" name="username" required type="text" />
+		</InputGroup>
 		<InputGroup>
 			<div class="w-100">Email</div>
 			<input class="" name="email" required type="email" />
@@ -40,7 +48,7 @@
 		{/if}
 		<div class="flex justify-between w-full">
 			<button class="btn border border-white self-center" type="submit">Register</button>
-			<div class="cursor-pointer" on:click|stopPropagation={() => (register = false)} role="none">
+			<div class="cursor-pointer" on:click|stopPropagation={() => goto('/login')} role="none">
 				Login
 			</div>
 		</div>

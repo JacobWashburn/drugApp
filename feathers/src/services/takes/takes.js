@@ -1,6 +1,14 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
-
+import { hooks as schemaHooks } from '@feathersjs/schema'
 import { getOptions, TakesService } from './takes.class.js'
+import {
+  takesDataResolver,
+  takesDataValidator,
+  takesExternalResolver,
+  takesPatchResolver,
+  takesPatchValidator,
+  takesResolver
+} from './takes.schema.js'
 
 export const takesPath = 'takes'
 export const takesMethods = ['find', 'get', 'create', 'patch', 'remove']
@@ -20,14 +28,14 @@ export const takes = (app) => {
   // Initialize hooks
   app.service(takesPath).hooks({
     around: {
-      all: []
+      all: [schemaHooks.resolveExternal(takesExternalResolver), schemaHooks.resolveResult(takesResolver)]
     },
     before: {
       all: [],
       find: [],
       get: [],
-      create: [],
-      patch: [],
+      create: [schemaHooks.validateData(takesDataValidator), schemaHooks.resolveData(takesDataResolver)],
+      patch: [schemaHooks.validateData(takesPatchValidator), schemaHooks.resolveData(takesPatchResolver)],
       remove: []
     },
     after: {
