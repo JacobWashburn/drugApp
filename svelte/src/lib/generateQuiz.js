@@ -13,6 +13,8 @@ function generateQuiz(fields, drugList, drugs, name) {
 					for (const value of acc[key]) {
 						if (typeof value === 'string') {
 							foundValues[value.toLowerCase()] = true;
+						} else {
+							foundValues[JSON.stringify(value)];
 						}
 					}
 				}
@@ -26,7 +28,12 @@ function generateQuiz(fields, drugList, drugs, name) {
 					if (Array.isArray(keyed[k])) {
 						keyed[k] = keyed[k]
 							.filter((value) => {
-								return !foundValues[value.toLowerCase()];
+								try {
+									return !foundValues[value.toLowerCase()];
+								} catch {
+									console.log('bad value', JSON.stringify(value));
+									return !foundValues[JSON.stringify(value)];
+								}
 							})
 							.map((v) => {
 								if (typeof v === 'string') {
