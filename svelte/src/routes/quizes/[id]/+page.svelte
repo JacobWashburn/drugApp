@@ -21,7 +21,7 @@
 		notes: 'Considerations'
 	};
 	let usedFields = data.takes
-		.filter((t) => t.createdBy === $user.email)
+		.filter((t) => t.createdBy === $user._id)
 		.reduce((acc, take) => {
 			for (const key of Object.keys(fieldNames)) {
 				if (!acc[key] && !!take[key]) {
@@ -111,7 +111,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each data.takes.filter((t) => t.createdBy === $user.email) as t}
+				{#each data.takes.filter((t) => t.createdBy === $user._id) as t}
 					<tr
 						class:cursor-pointer={!!t.submitted}
 						class=""
