@@ -66,7 +66,7 @@
 			role="button"
 			tabindex="-1"
 		></i>
-		{#if data.quiz.createdBy === $user.email}
+		{#if data.quiz.createdBy === $user._id}
 			<i
 				class="fas fa-pencil-alt text-2xl"
 				on:click|stopPropagation={() => goto(`/quizes/${data.quiz._id}/edit`)}
