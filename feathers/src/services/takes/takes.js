@@ -7,6 +7,8 @@ import {
   takesExternalResolver,
   takesPatchResolver,
   takesPatchValidator,
+  takesQueryResolver,
+  takesQueryValidator,
   takesResolver
 } from './takes.schema.js'
 
@@ -31,7 +33,7 @@ export const takes = (app) => {
       all: [schemaHooks.resolveExternal(takesExternalResolver), schemaHooks.resolveResult(takesResolver)]
     },
     before: {
-      all: [],
+      all: [schemaHooks.validateQuery(takesQueryValidator), schemaHooks.resolveQuery(takesQueryResolver)],
       find: [],
       get: [],
       create: [schemaHooks.validateData(takesDataValidator), schemaHooks.resolveData(takesDataResolver)],
