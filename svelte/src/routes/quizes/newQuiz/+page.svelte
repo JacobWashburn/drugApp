@@ -69,7 +69,7 @@
 				.filter((d) => selection.includes(d.name))
 				.sort(() => (Math.random > 0.5 ? 1 : -1));
 		} else {
-			list = $Drugs.arr.sort(() => (Math.random > 0.5 ? 1 : -1)).slice(0, amount);
+			list = $Drugs.arr.sort(() => (Math.random() > 0.5 ? 1 : -1)).slice(0, amount);
 		}
 		let quiz = {
 			name,
